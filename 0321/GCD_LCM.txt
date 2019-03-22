@@ -1,0 +1,29 @@
+
+
+#include <iostream>
+using namespace std;
+
+// 유클리드 알고리즘을 구현
+int gcd(int a, int b) {
+	if (b == 0) {
+		return a;
+	}
+	else {
+		return gcd(b, a%b);
+	}
+
+}
+// 메인 함수에서는 최대공약수와 최대공배수의 값을 출력함
+int main() {
+	// 정수 a, b
+	int a, b;
+	// 정수 a, b 입력 받음
+	cin >> a >> b;
+	// 최대공약수를 지정;
+	int GCD = gcd(a, b);
+	// 최대공약수 값 출력
+	cout << GCD << endl;
+	// 최소공배수 값 출력
+	cout << GCD * (a / GCD) * (b / GCD) << endl;
+	return 0;
+}
