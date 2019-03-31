@@ -1,0 +1,58 @@
+import java.io.FileReader;	//FileReader 클래스를 사용
+import java.io.IOException;	//파일 입출력 과정에서 발생하는 예외 처리
+import java.util.Scanner;
+
+public class main{
+
+	static class member{
+		String name;	//이름 변수
+		int p;			//개인별 출장비지급액 변수
+		int pm[] = new int[10];	//오만~일까지 10개의 단위. 개인의 각 단위별 매수의 변수
+	}
+
+	public static void main(String[] args) throws IOException{//입출력시 발생하는 예외 처리를 IOException 클래스로 넘김(안 그러면 오류)
+		Scanner sc = new Scanner(new FileReader("data.txt"));
+		//FileReader 사용해 'data.txt' 파일을 읽어온다
+		member data = new member();
+
+		int tm[] = new int[10];//오만~일까지 10개의 단위. 전체 인원의 각 단위별 매수의 변수
+		int k, t, m, sw;	//t : 화폐 단위별로 매수를 계산할 금액, m : 화폐단위 변수, sw : 단위 구분(일만,일천,일백,일십,일/오만,오천,오백,오십,오)
+		System.out.printf("\t\t\t출장비 지급표\n");
+		System.out.printf(" 성명   출장비지급액  오만     일만     오천     일천     오백     일백     오십     일십      오        일\n");
+
+		while(true){
+			data.name=sc.next();			//한 줄의 이름을 가져온다.
+			if(data.name.equals("quit"))	//이 때, 이름에 quit이라고 저장되어 있으면 while문 종료한다.
+				break;
+			data.p=sc.nextInt();			//quit이 아니라면 해당 줄의 금액을 가져온다.
+			t=data.p;	//지급액 가져와 t 초기화하기
+			m=50000;	//제일 큰 단위인 50,000원에서 시작한다.
+			sw=1;		//5로 시작하니까(오만,오천,오백,오십,오)
+			
+			for(k=0;k<=9;k++){
+				data.pm[k]=t/m;	//지급액을 단위로 나눈 몫을 data의 배열 pm. 즉, 개인의 단위별 매수에 초기화한다.
+				t=t-data.pm[k]*m; //바로 윗 줄에서 계산한 금액을 제외한 후 남은 금액을 변수 t 초기화
+				if(sw==1){
+					m/=5;	//5로 나눔
+					sw=0;	//다음은 1로 시작하는 단위이므로 변수 0
+				}
+				else {
+					m/=2;	//2로 나눔
+					sw=1;	//다음은 5로 시작하는 단위이므로 변수 1
+				}
+			}
+			System.out.printf("%s %d", data.name, data.p);//이름과 지급액 출력
+			for(k=0;k<=9;k++){
+				System.out.printf("%5d", data.pm[k]);	//각 단위별 매수 출력
+				tm[k]+=data.pm[k];			//토탈 인원의 매수 합계를 구하기 위해 더함
+			}
+			System.out.printf("\n");
+
+		}
+		System.out.printf("전체 화폐 매수       ");
+		for(k=0;k<=9;k++)
+			System.out.printf("%5d", tm[k]);	//간격을 띄우고 총 화폐 매수를 출력한다.
+		sc.close();
+	}
+}
+
