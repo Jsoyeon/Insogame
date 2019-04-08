@@ -1,0 +1,29 @@
+import java.util.Scanner;
+
+public class p257 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner (System.in);
+		int n = sc.nextInt();	//숫자의 시작 범위 입력
+		sc.close();
+		
+		int num, i, j, sum, k, r;
+		i=n;
+		num = 0;
+		while(i<=10000) {		//n~10000까지 완전수 구하기
+			sum = 0;			//약수의 합
+			k = i/2;			
+			for(j=1;j<=k;j++) {
+				r=i%j;			//입력받은 수를 약수라고 가정하는 수로 나눔
+				if(r==0)		//조건에 해당하면 약수임
+					sum=sum+j;	//j가 약수!
+			}
+			if(i==sum) {		//약수를 모두 합한 변수인 sum과 완전수인지 확인할 i 비교
+				System.out.println("완전수 : "+i);		//i와 sum이 같으면 완전수
+				num+=1;			//범위 내의 완전수 갯수 누적
+			}
+			i++;
+		}
+		System.out.println("완전수의 갯수 : "+num);
+	}
+
+}
